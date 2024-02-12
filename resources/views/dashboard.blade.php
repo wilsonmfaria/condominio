@@ -1,6 +1,6 @@
 <x-admin>
     @section('title')
-        {{ 'Dashboard' }}
+        Acesso Rápido
     @endsection
     <x-dashboard />
 </x-admin>

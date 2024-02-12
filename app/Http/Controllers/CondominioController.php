@@ -26,7 +26,7 @@ class CondominioController extends Controller
         $users = User::where('status','ativo')->get();
         $rateio = $users->count();
         $totalContas = Conta::where('mesAno',$mes.'/'.$ano)->sum('valorPagar');
-        $caixa = $totalContas*0.15;
+        $caixa = $totalContas*0.0;
         $totalFinal = $totalContas + $caixa;
         $valorPagar = $totalFinal/$rateio;
         Condominio::where('mesAno',$mes.'/'.$ano)->delete();
