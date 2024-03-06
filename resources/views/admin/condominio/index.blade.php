@@ -131,8 +131,9 @@
                                     <p class="text-danger"><strong>VALOR A PAGAR: R$
                                             {{ number_format($item['condominio']['valorPagar'], 2, ',', '.') }}</strong>
                                     </p>
+                                    <p class="text-danger"><strong>PIX CPF: 09160654643 <br> WILSON MISSINA FARIA</strong></p>
                                     <p class="text-danger"><strong>VENCIMENTO EM
-                                            20/{{ $item['condominio']['mesAno'] }}</strong></p>
+                                            22/{{ $item['condominio']['mesAno'] }}</strong></p>
                                     <hr>
                                     <div
                                         class="pt-4 text-center alert {{ $item['condominio']['status'] == 'PAGO' ? 'alert-success' : ($item['condominio']['status'] == 'PENDENTE' ? 'alert-warning' : 'alert-danger') }}">
