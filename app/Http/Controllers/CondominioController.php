@@ -11,7 +11,7 @@ class CondominioController extends Controller
 {
     public function index()
     {
-        $condominios = Condominio::where('apId',Auth::user()->ap)->get();
+        $condominios = Condominio::where('apId',Auth::user()->ap)->orderBy('mesAno','desc')->get();
         $data = [];
         foreach ($condominios as $condominio){
             $contas = Conta::where('mesAno',$condominio->mesAno)->get();
@@ -22,7 +22,6 @@ class CondominioController extends Controller
 
     public function process($mes,$ano)
     {
-        $contas = Conta::where('mesAno',$mes.'/'.$ano)->get();
         $users = User::where('status','ativo')->get();
         $rateio = $users->count();
         $totalContas = Conta::where('mesAno',$mes.'/'.$ano)->sum('valorPagar');
