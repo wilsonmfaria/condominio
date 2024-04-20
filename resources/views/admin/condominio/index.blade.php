@@ -133,7 +133,7 @@
                                     </p>
                                     <p class="text-danger"><strong>PIX CPF: 09160654643 <br> WILSON MISSINA FARIA</strong></p>
                                     <p class="text-danger"><strong>VENCIMENTO EM
-                                            22/{{ $item['condominio']['mesAno'] }}</strong></p>
+                                            26/{{ $item['condominio']['mesAno'] }}</strong></p>
                                     <hr>
                                     <div
                                         class="pt-4 text-center alert {{ $item['condominio']['status'] == 'PAGO' ? 'alert-success' : ($item['condominio']['status'] == 'PENDENTE' ? 'alert-warning' : 'alert-danger') }}">

@@ -18,14 +18,22 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php($total = 0)
                         @foreach($dados as $item)
-                        <tr>
-                            <th scope="row">{{$item->mesAno}}</th>
-                            <td class="text-green text-bold">R$ {{number_format($item->credito, 2, ',', '.')}}</td>
-                            <td class="text-red text-bold">R$ {{number_format($item->debito, 2, ',', '.')}}</td>
-                            <td class="text-{{$item->saldo >= 0 ? 'green' : 'red'}} text-bold">R$ {{number_format($item->saldo, 2, ',', '.')}}</td>
-                        </tr>
+                            @php($total += $item->saldo)
+                            <tr>
+                                <th scope="row">{{$item->mesAno}}</th>
+                                <td class="text-green text-bold">R$ {{number_format($item->credito, 2, ',', '.')}}</td>
+                                <td class="text-red text-bold">R$ {{number_format($item->debito, 2, ',', '.')}}</td>
+                                <td class="text-{{$item->saldo >= 0 ? 'green' : 'red'}} text-bold">R$ {{number_format($item->saldo, 2, ',', '.')}}</td>
+                            </tr>
                         @endforeach
+                            <tr class="bg-dark">
+                                <th scope="row">Caixa Disponível</th>
+                                <td></td>
+                                <td></td>
+                                <td>R$ {{number_format($total, 2, ',', '.')}}</td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
