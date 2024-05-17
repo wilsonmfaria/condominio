@@ -11,10 +11,15 @@ class CondominioController extends Controller
 {
     public function index()
     {
-        $condominios = Condominio::where('apId',Auth::user()->ap)->orderBy('mesAno','desc')->get();
+        $ap = Auth::user()->ap;
+        $bl = "BL".$ap[3];
+        $condominios = Condominio::where('apId',$ap)->orderBy('mesAno','desc')->get();
         $data = [];
         foreach ($condominios as $condominio){
-            $contas = Conta::where('mesAno',$condominio->mesAno)->get();
+            $contas = Conta::where('mesAno',$condominio->mesAno)->where(function ($query) use ($bl) {
+                $query->where('tipoCobranca','like',"$bl%")
+                      ->orWhere('tipoCobranca','like',"ALL%");
+            })->get();
             $data[$condominio->mesAno] = ['condominio'=>$condominio->toArray(),'contas'=>$contas->toArray()];
         }
         return view('admin.condominio.index', compact('data'));
