@@ -22,24 +22,64 @@ class CondominioController extends Controller
 
     public function process($mes,$ano)
     {
-        $users = User::where('status','ativo')->get();
-        $rateio = $users->count();
-        $totalContas = Conta::where('mesAno',$mes.'/'.$ano)->sum('valorPagar');
-        $caixa = $totalContas*0.0;
-        $totalFinal = $totalContas + $caixa;
-        $valorPagar = $totalFinal/$rateio;
-        Condominio::where('mesAno',$mes.'/'.$ano)->delete();
-        foreach ($users as $user){
-            $input = new Condominio();
-            $input->mesAno = $mes.'/'.$ano;
-            $input->apId = $user->ap;
-            $input->totalContas = $totalContas;
-            $input->caixa = $caixa;
-            $input->totalFinal = $totalFinal;
-            $input->valorPagar = $valorPagar;
-            $input->status = 'PENDENTE';
-            $input->save();
+        $mon = date("m");
+        $day = date("d");
+        $year = date("Y");
+        // NAO PERMITIR EXECUTAR SE NAO BATER O MES E DIA
+        if(intval($mon) == intval($mes) && intval($day) <= 18 && intval($ano) == $year){
+            //PODE EXECUTAR
+            $users = User::where('status','ATIVO')->get();
+            $rateioA = User::where('status','ATIVO')->where('ap','like','%A')->count();
+            $rateioB = User::where('status','ATIVO')->where('ap','like','%B')->count();
+            $rateioAll = $users->count();
+            
+            $totalContasA = Conta::where('mesAno',$mes.'/'.$ano)->where('tipoCobranca','like','BLA%')->sum('valorPagar');
+            $totalContasB = Conta::where('mesAno',$mes.'/'.$ano)->where('tipoCobranca','like','BLB%')->sum('valorPagar');
+            $totalContasAll = Conta::where('mesAno',$mes.'/'.$ano)->where('tipoCobranca','like','ALL%')->sum('valorPagar');
+            
+            $valorPagarA = $totalContasA/$rateioA;
+            $valorPagarB = $totalContasB/$rateioB;
+            $valorPagarAll = $totalContasAll/($rateioA+$rateioB);
+
+            $VFinalA = $totalContasA+$totalContasAll;
+            $VFinalB = $totalContasB+$totalContasAll;
+
+            $VRateA = $valorPagarA+$valorPagarAll;
+            $VRateB = $valorPagarB+$valorPagarAll;
+
+            Condominio::where('mesAno',$mes.'/'.$ano)->delete();
+
+            foreach ($users as $user){
+                
+                if($user->ap[3]=="A"){
+                    $input = new Condominio();
+                    $input->mesAno = $mes.'/'.$ano;
+                    $input->apId = $user->ap;
+                    $input->totalContas = $VFinalA;
+                    $input->caixa = 0;
+                    $input->totalFinal = $VFinalA;
+                    $input->valorPagar = $VRateA;
+                    $input->status = 'PENDENTE';
+                    $input->save();
+                }
+                if($user->ap[3]=="B"){
+                    $input = new Condominio();
+                    $input->mesAno = $mes.'/'.$ano;
+                    $input->apId = $user->ap;
+                    $input->totalContas = $VFinalB;
+                    $input->caixa = 0;
+                    $input->totalFinal = $VFinalB;
+                    $input->valorPagar = $VRateB;
+                    $input->status = 'PENDENTE';
+                    $input->save();
+                }
+            }
+            return \App::abort(403, "Processado com Sucesso");
+        }else{
+            //NAO PODE EXECUTAR
+            return \App::abort(403, "Nao Autorizado");
         }
+
     }
 
     public function create()
