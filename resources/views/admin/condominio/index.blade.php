@@ -102,7 +102,7 @@
                                             <tr>
                                                 <th class=text-nowrap">Gastos Totais</th>
                                                 <th class=text-nowrap">Fundo de Reserva</th>
-                                                <th class=text-nowrap">Cutsto Total Final</th>
+                                                <th class=text-nowrap">Custo Total Final</th>
                                                 <th class=text-nowrap">Custo Rateado</th>
                                             </tr>
                                         </thead>
