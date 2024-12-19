@@ -31,7 +31,7 @@ class CondominioController extends Controller
         $day = date("d");
         $year = date("Y");
         // NAO PERMITIR EXECUTAR SE NAO BATER O MES E DIA
-        if(intval($mon) == intval($mes) && intval($day) <= 18 && intval($ano) == $year){
+        if(intval($mon) == intval($mes) && intval($day) <= 29 && intval($ano) == $year){
             //PODE EXECUTAR
             $users = User::where('status','ATIVO')->get();
             $rateioA = User::where('status','ATIVO')->where('ap','like','%A')->count();
